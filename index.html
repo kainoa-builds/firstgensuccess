@@ -196,7 +196,10 @@
     <div class="wrap">
       <div class="parents-grid reveal">
         <div class="ph parents-photo">
-          <span class="ph-label">parent &amp; student · move-in day, proud</span>
+          <div class="ph-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35;color:var(--ink-soft)"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span class="ph-label">Photo coming soon</span>
+          </div>
         </div>
         <div class="parents-body">
           <div class="sec-tag">For parents &amp; families</div>
@@ -331,7 +334,10 @@
     <div class="wrap">
       <div class="founder-grid reveal">
         <div class="ph founder-photo">
-          <span class="ph-label">founder portrait · warm, approachable</span>
+          <div class="ph-inner">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35;color:var(--ink-soft)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="ph-label">Photo coming soon</span>
+          </div>
         </div>
         <div class="founder-body">
           <div class="founder-kicker">From the founder</div>
@@ -431,11 +437,25 @@
     document.body.style.overflow = '';
   }));
 
-  // reveal on scroll
+  // reveal on scroll — also fire immediately for elements already in view
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  }, { threshold:0.12 });
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold:0.08, rootMargin:'0px 0px -40px 0px' });
+
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // force-reveal anything above the fold immediately
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.reveal').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('in');
+    });
+  });
 </script>
 </body>
 </html>
